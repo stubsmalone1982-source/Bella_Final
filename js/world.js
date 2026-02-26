@@ -171,7 +171,7 @@ void main() {
 
   // --- Pentagram ---
   vec4 pent = texture2D(uPentagram, pentUV);
-  vec3 pentColor = pent.rgb * 0.14;
+  vec3 pentColor = pent.rgb * 0.35;
 
   vec3 finalColor = base + damask + plum + pentColor;
 
@@ -279,5 +279,6 @@ function loop(now) {
 }
 
 requestAnimationFrame(loop);
+
 
 

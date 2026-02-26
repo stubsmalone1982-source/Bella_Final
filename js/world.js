@@ -29,6 +29,50 @@ let lastMoveTime = 0;
 let rippleTime = 0;
 let rippleActive = false;
 
+// Texture holders
+let damaskTexture;
+let pentagramTexture;
+
+function loadTexture(url) {
+  const texture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+
+  // temporary 1px placeholder
+  gl.texImage2D(
+    gl.TEXTURE_2D,
+    0,
+    gl.RGBA,
+    1,
+    1,
+    0,
+    gl.RGBA,
+    gl.UNSIGNED_BYTE,
+    new Uint8Array([0, 0, 0, 255])
+  );
+
+  const image = new Image();
+  image.src = url;
+  image.onload = () => {
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.texImage2D(
+      gl.TEXTURE_2D,
+      0,
+      gl.RGBA,
+      gl.RGBA,
+      gl.UNSIGNED_BYTE,
+      image
+    );
+    gl.generateMipmap(gl.TEXTURE_2D);
+  };
+
+  return texture;
+}
+
+// Load assets
+damaskTexture = loadTexture("assets/damask.png");
+pentagramTexture = loadTexture("assets/pentagram.png");
+
+
 /* ---------------------------
    MOUSE TRACKING
 ---------------------------- */
@@ -80,28 +124,49 @@ uniform float uTime;
 uniform float uIntensity;
 uniform float uRippleTime;
 
+uniform sampler2D uDamask;
+uniform sampler2D uPentagram;
+
 void main() {
-  vec2 center = vec2(0.5, 0.45);
   vec2 uv = vUv;
 
-  // --- Parallax (subtle, max under 3px equivalent) ---
-  uv += uMouse * 0.01 * uIntensity;
+  // --- Parallax layers ---
+  vec2 damaskOffset = uMouse * 0.004 * uIntensity;
+  vec2 glowOffset = uMouse * 0.007 * uIntensity;
+  vec2 pentOffset = uMouse * 0.01 * uIntensity;
 
-  // --- Plum radial glow ---
-  float dist = distance(uv, center);
-  float glow = smoothstep(0.7, 0.0, dist);
-  vec3 plum = vec3(0.22, 0.0, 0.25) * glow * 0.6;
+  vec2 damaskUV = uv + damaskOffset;
+  vec2 glowUV = uv + glowOffset;
+  vec2 pentUV = uv + pentOffset;
 
-  // --- Ripple distortion (very low amplitude) ---
+  // --- Ripple distortion ---
   if (uRippleTime > 0.0) {
-    float rippleDist = distance(uv, uMouse + 0.5);
-    float ripple = sin(rippleDist * 40.0 - uRippleTime * 4.0) * 0.002;
-    uv += ripple * uIntensity;
+    float dist = distance(uv, uMouse + 0.5);
+    float ripple = sin(dist * 40.0 - uRippleTime * 4.0) * 0.002;
+    damaskUV += ripple * uIntensity;
+    glowUV += ripple * uIntensity;
+    pentUV += ripple * uIntensity;
   }
 
-  vec3 base = vec3(0.055, 0.055, 0.07);
+  // --- Base ---
+  vec3 base = vec3(0.075, 0.075, 0.09);
 
-  gl_FragColor = vec4(base + plum, 1.0);
+  // --- Damask ---
+  vec3 damask = texture2D(uDamask, damaskUV).rgb * 0.18;
+
+  // --- Plum Glow ---
+  vec2 center = vec2(0.5, 0.45);
+  float distGlow = distance(glowUV, center);
+  float glow = smoothstep(0.7, 0.0, distGlow);
+  vec3 plum = vec3(0.22, 0.0, 0.25) * glow * 0.6;
+
+  // --- Pentagram ---
+  vec4 pent = texture2D(uPentagram, pentUV);
+  vec3 pentColor = pent.rgb * 0.14;
+
+  vec3 finalColor = base + damask + plum + pentColor;
+
+  gl_FragColor = vec4(finalColor, 1.0);
 }
 `;
 
@@ -154,6 +219,11 @@ const uMouse = gl.getUniformLocation(program, "uMouse");
 const uTime = gl.getUniformLocation(program, "uTime");
 const uIntensity = gl.getUniformLocation(program, "uIntensity");
 const uRippleTime = gl.getUniformLocation(program, "uRippleTime");
+const uDamask = gl.getUniformLocation(program, "uDamask");
+const uPentagram = gl.getUniformLocation(program, "uPentagram");
+
+gl.uniform1i(uDamask, 0);
+gl.uniform1i(uPentagram, 1);
 
 /* ---------------------------
    LOOP
@@ -189,10 +259,15 @@ function loop(now) {
   gl.uniform1f(uTime, now * 0.001);
   gl.uniform1f(uIntensity, intensity);
   gl.uniform1f(uRippleTime, rippleTime);
+  gl.activeTexture(gl.TEXTURE0);
+  gl.bindTexture(gl.TEXTURE_2D, damaskTexture);
 
+  gl.activeTexture(gl.TEXTURE1);
+  gl.bindTexture(gl.TEXTURE_2D, pentagramTexture);
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
   requestAnimationFrame(loop);
 }
 
 requestAnimationFrame(loop);
+

@@ -3,6 +3,7 @@
 
 const canvas = document.getElementById("world");
 const gl = canvas.getContext("webgl");
+targetIntensity = 0;
 
 if (!gl) {
   alert("WebGL not supported");
@@ -548,8 +549,23 @@ function handleChoice(choice, container) {
     }, 2000);
 
   }, 800);
+
+  const portal = document.getElementById("portal");
+const enterBtn = document.getElementById("enter-btn");
+
+enterBtn.addEventListener("click", () => {
+
+  portal.style.opacity = 0;
+
+  setTimeout(() => {
+    portal.style.display = "none";
+  }, 1200);
+
+  targetIntensity = 1; // world fades in motion
+});
 }
 
   });
 });
+
 

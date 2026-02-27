@@ -266,6 +266,11 @@ requestAnimationFrame(loop);
 /* ---------------- WORD CACHE ---------------- */
 
 window.addEventListener("load", () => {
+  const portalTitle = document.querySelector("#portal h1");
+const portalButton = document.getElementById("enter-btn");
+
+setTimeout(() => portalTitle.style.opacity = 1, 300);
+setTimeout(() => portalButton.style.opacity = 1, 900);
   const words = document.querySelectorAll(".hidden-word");
   wordData = Array.from(words).map(word => {
     const rect = word.getBoundingClientRect();
@@ -321,5 +326,6 @@ enterBtn.addEventListener("click", () => {
   }, 1200);
 
 });
+
 
 

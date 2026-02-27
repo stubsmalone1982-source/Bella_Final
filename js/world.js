@@ -30,6 +30,7 @@ let rippleTime = 0;
 let rippleActive = false;
 let velocity = { x: 0, y: 0 };
 let worldActive = true; 
+let wordData = [];
 
 // Texture holders
 let damaskTexture;
@@ -308,28 +309,25 @@ smoothMouse.y += velocity.y * dt;
 // --- Hidden word reveal ---
 if (worldActive) {
 
-  const words = document.querySelectorAll(".hidden-word");
+  wordData.forEach(word => {
 
-  words.forEach(word => {
-    const rect = word.getBoundingClientRect();
-
-    const wordX = (rect.left + rect.width / 2) / window.innerWidth;
-    const wordY_dom = (rect.top + rect.height / 2) / window.innerHeight;
-    const wordY_uv = 1.0 - wordY_dom;
-
-    const dx = (mouse.x + 0.5) - wordX;
-    const dy = (-mouse.y + 0.5) - wordY_uv;
+    const dx = (mouse.x + 0.5) - word.x;
+    const dy = (-mouse.y + 0.5) - word.y;
     const dist = Math.sqrt(dx * dx + dy * dy);
 
     const currentRadius = Math.min(rippleTime * 1.2, 0.18);
 
     if (rippleTime > 0 && dist < currentRadius) {
-      word.style.opacity = 1;
-      word.style.filter = "blur(0px)";
+      word.el.style.opacity = 1;
+      word.el.style.filter = "blur(0px)";
     } else {
-      word.style.opacity = 0;
-      word.style.filter = "blur(4px)";
+      word.el.style.opacity = 0;
+      word.el.style.filter = "blur(4px)";
     }
+
+  });
+
+}
   });
 
 }
@@ -338,6 +336,24 @@ if (worldActive) {
 }
 
 requestAnimationFrame(loop);
+
+// --- Cache word positions after layout ---
+window.addEventListener("load", () => {
+
+  const words = document.querySelectorAll(".hidden-word");
+
+  wordData = Array.from(words).map(word => {
+
+    const rect = word.getBoundingClientRect();
+
+    return {
+      el: word,
+      x: (rect.left + rect.width / 2) / window.innerWidth,
+      y: 1.0 - ((rect.top + rect.height / 2) / window.innerHeight)
+    };
+  });
+
+});
 
 // --- Word Click Behavior ---
 const words = document.querySelectorAll(".hidden-word");
@@ -536,3 +552,4 @@ function handleChoice(choice, container) {
 
   });
 });
+

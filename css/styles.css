@@ -10,3 +10,32 @@ canvas {
   width: 100vw;
   height: 100vh;
 }
+
+.hidden-word {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 0 8px rgba(255,255,255,0.4);
+  font-family: serif;
+  font-size: 28px;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: opacity 0.4s ease, filter 0.4s ease;
+  opacity: 0;
+}
+
+#word1 { right: 12%; bottom: 18%; }
+#word2 { right: 15%; top: 20%; }
+#word3 { left: 18%;  top: 45%; }
+
+#word-display {
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 32px;
+  font-family: serif;
+  color: rgba(220,220,230,0.9);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}

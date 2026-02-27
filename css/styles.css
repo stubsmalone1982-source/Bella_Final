@@ -1,7 +1,7 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: #0e0e11;
+  background: #0e0e11; /* deep charcoal */
   overflow: hidden;
 }
 
@@ -19,31 +19,24 @@ html, body {
 /* --- Hidden Words --- */
 
 .hidden-word {
-  #word1 {
-  top: 65%;
-  left: 75%;
-}
-
-#word2 {
-  top: 25%;
-  left: 70%;
-}
-
-#word3 {
-  top: 50%;
-  left: 20%;
-}
   position: absolute;
-  z-index: 10;
-  opacity: 0;
-  filter: blur(4px);
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 0 8px rgba(255,255,255,0.4);
+  font-family: serif;
+  font-size: 28px;
   pointer-events: auto;
   cursor: pointer;
-  transition: opacity 0.3s ease, filter 0.3s ease;
-  font-family: serif;
-  font-size: 22px;
-  color: white;
+  transition: opacity 0.4s ease, filter 0.4s ease;
+  opacity: 0;
+  filter: blur(4px);
+  z-index: 10;
 }
+
+/* ORIGINAL POSITIONS RESTORED */
+
+#word1 { right: 12%; bottom: 18%; }
+#word2 { right: 15%; top: 20%; }
+#word3 { left: 18%;  top: 45%; }
 
 /* --- Word Display --- */
 
@@ -56,9 +49,9 @@ html, body {
   font-family: serif;
   color: rgba(220,220,230,0.9);
   opacity: 0;
+  transition: opacity 0.4s ease;
   pointer-events: none;
   z-index: 20;
-  transition: opacity 0.4s ease;
 }
 
 /* --- Portal --- */
@@ -71,8 +64,8 @@ html, body {
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  transform: scale(1);
   transition: opacity 1.2s ease, transform 1.2s ease;
+  transform: scale(1);
 }
 
 #portal.collapse {
@@ -107,4 +100,3 @@ html, body {
 #portal button:hover {
   box-shadow: 0 0 15px rgba(150,0,255,0.5);
 }
-

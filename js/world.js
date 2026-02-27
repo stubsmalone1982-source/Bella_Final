@@ -301,11 +301,15 @@ const portal = document.getElementById("portal");
 const enterBtn = document.getElementById("enter-btn");
 
 enterBtn.addEventListener("click", () => {
-  portal.style.opacity = 0;
+
+  portal.classList.add("collapse");
+
   setTimeout(() => {
     portal.style.display = "none";
   }, 1200);
+
   targetIntensity = 1;
 });
+
 
 

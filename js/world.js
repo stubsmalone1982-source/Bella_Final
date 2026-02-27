@@ -98,61 +98,8 @@ void main() {
 
 const fragmentSrc = `
 precision mediump float;
-
-varying vec2 vUv;
-
-uniform vec2 uMouse;
-uniform float uTime;
-uniform float uIntensity;
-uniform float uRippleTime;
-uniform sampler2D uDamask;
-uniform sampler2D uPentagram;
-
 void main() {
-
-  vec2 uv = vUv;
-
-  vec2 damaskOffset = uMouse * 0.004 * uIntensity;
-  vec2 glowOffset   = uMouse * 0.007 * uIntensity;
-  vec2 pentOffset   = uMouse * 0.01  * uIntensity;
-
-  vec2 damaskUV = uv * 3.5 + damaskOffset;
-  vec2 glowUV   = uv + glowOffset;
-  vec2 pentUV   = uv + pentOffset;
-
-  if (uRippleTime > 0.0) {
-    float dist = distance(uv, uMouse + 0.5);
-    float maxRadius = 0.18;
-    float radius = min(uRippleTime * 1.2, maxRadius);
-
-    float edge = smoothstep(radius - 0.02, radius, dist)
-               - smoothstep(radius, radius + 0.02, dist);
-
-    float ripple = edge * (1.0 - uRippleTime);
-
-    damaskUV += ripple * 0.01 * uIntensity;
-    glowUV   += ripple * 0.013 * uIntensity;
-    pentUV   += ripple * 0.016 * uIntensity;
-  }
-
-  vec3 base = vec3(0.06, 0.06, 0.09);
-
-  vec3 damaskTex = texture2D(uDamask, damaskUV).rgb;
-  float damaskLum = dot(damaskTex, vec3(0.299, 0.587, 0.114));
-  vec3 damask = vec3(damaskLum) * 0.12/;
-
-  vec2 center = vec2(0.5, 0.6);
-  float distGlow = distance(glowUV, center);
-  float glow = smoothstep(0.7, 0.0, distGlow);
-  vec3 plum = vec3(0.16, 0.02, 0.20) * glow * 0.45;
-
-  vec4 pent = texture2D(uPentagram, pentUV);
-  float pentStrength = pow(pent.r, 0.6);
-  vec3 pentColor = vec3(0.75, 0.75, 0.8) * pentStrength * 0.12;
-
-  vec3 finalColor = base + damask + plum + pentColor;
-
-  gl_FragColor = vec4(finalColor, 1.0);
+  gl_FragColor = vec4(0.2, 0.0, 0.2, 1.0);
 }
 `;
 
@@ -337,6 +284,7 @@ enterBtn.addEventListener("click", () => {
   }, 1200);
 
 });
+
 
 
 

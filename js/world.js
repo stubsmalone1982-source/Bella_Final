@@ -304,11 +304,15 @@ enterBtn.addEventListener("click", () => {
 
   portal.classList.add("collapse");
 
+  // Delay world activation slightly
+  setTimeout(() => {
+    targetIntensity = 1;
+  }, 500);
+
   setTimeout(() => {
     portal.style.display = "none";
   }, 1200);
 
-  targetIntensity = 1;
 });
 
 

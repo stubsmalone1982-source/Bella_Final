@@ -162,13 +162,24 @@ function compile(type, source) {
   const shader = gl.createShader(type);
   gl.shaderSource(shader, source);
   gl.compileShader(shader);
+
+  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+    console.error("Shader compile error:", gl.getShaderInfoLog(shader));
+    gl.deleteShader(shader);
+    return null;
+  }
+
   return shader;
 }
-
 const program = gl.createProgram();
 gl.attachShader(program, compile(gl.VERTEX_SHADER, vertexSrc));
 gl.attachShader(program, compile(gl.FRAGMENT_SHADER, fragmentSrc));
 gl.linkProgram(program);
+
+if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+  console.error("Program link error:", gl.getProgramInfoLog(program));
+}
+
 gl.useProgram(program);
 
 const quad = gl.createBuffer();
@@ -326,6 +337,7 @@ enterBtn.addEventListener("click", () => {
   }, 1200);
 
 });
+
 
 
 

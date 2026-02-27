@@ -19,7 +19,7 @@ html, body {
 /* --- Hidden Words --- */
 
 .hidden-word {
-  position: absolute;
+  position: fixed;
   color: rgba(255, 255, 255, 0.9);
   text-shadow: 0 0 8px rgba(255,255,255,0.4);
   font-family: serif;
@@ -100,3 +100,4 @@ html, body {
 #portal button:hover {
   box-shadow: 0 0 15px rgba(150,0,255,0.5);
 }
+

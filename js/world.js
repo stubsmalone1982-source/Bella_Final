@@ -1,4 +1,4 @@
-// World Engine — Bella Project v2
+// World Engine — Bella Project (Stable Zip Baseline + Click Injection)
 
 const canvas = document.getElementById("world");
 const gl = canvas.getContext("webgl");
@@ -98,6 +98,7 @@ void main() {
 
 const fragmentSrc = `
 precision mediump float;
+
 varying vec2 vUv;
 
 uniform vec2 uMouse;
@@ -155,7 +156,7 @@ void main() {
 }
 `;
 
-/* ---------------- PROGRAM ---------------- */
+/* ---------------- PROGRAM SETUP ---------------- */
 
 function compile(type, source) {
   const shader = gl.createShader(type);
@@ -170,8 +171,6 @@ gl.attachShader(program, compile(gl.FRAGMENT_SHADER, fragmentSrc));
 gl.linkProgram(program);
 gl.useProgram(program);
 
-/* ---------------- GEOMETRY ---------------- */
-
 const quad = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, quad);
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
@@ -181,8 +180,6 @@ gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
 const position = gl.getAttribLocation(program, "position");
 gl.enableVertexAttribArray(position);
 gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
-
-/* ---------------- UNIFORMS ---------------- */
 
 const uMouse = gl.getUniformLocation(program, "uMouse");
 const uTime = gl.getUniformLocation(program, "uTime");
@@ -264,7 +261,6 @@ function loop(now) {
 
   requestAnimationFrame(loop);
 }
-
 requestAnimationFrame(loop);
 
 /* ---------------- WORD CACHE ---------------- */
@@ -279,21 +275,15 @@ window.addEventListener("load", () => {
       y: 1.0 - ((rect.top + rect.height / 2) / window.innerHeight)
     };
   });
-});
 
-/* ---------------- WORD CLICK ---------------- */
-
-window.addEventListener("load", () => {
+  /* ---------------- WORD CLICK ---------------- */
 
   const wordDisplay = document.getElementById("word-display");
 
   let wordLock = false;
   let wordsFound = 0;
 
-  document.querySelectorAll(".hidden-word").forEach(word => {
-
-    word.style.pointerEvents = "auto";
-    word.style.cursor = "pointer";
+  words.forEach(word => {
 
     word.addEventListener("click", () => {
 
@@ -304,160 +294,17 @@ window.addEventListener("load", () => {
       word.style.pointerEvents = "none";
 
       wordDisplay.textContent = word.textContent;
-      wordDisplay.style.opacity = "1";
+      wordDisplay.style.opacity = 1;
 
       wordsFound++;
 
       setTimeout(() => {
-        wordDisplay.style.opacity = "0";
+        wordDisplay.style.opacity = 0;
         wordLock = false;
       }, 1800);
 
-      if (wordsFound === 3) {
-        setTimeout(() => {
-          worldActive = false;
-          startActThree();
-        }, 1200);
-      }
-
     });
 
   });
 
 });
-/* ---------------- PORTAL ---------------- */
-
-// --- Portal Fade In ---
-window.addEventListener("load", () => {
-  const readyText = document.querySelector("#portal h1");
-  const button = document.getElementById("enter-btn");
-
-  setTimeout(() => {
-    readyText.style.opacity = "1";
-  }, 700);
-
-  setTimeout(() => {
-    button.style.opacity = "1";
-  }, 1700);
-});
-
-const portal = document.getElementById("portal");
-const enterBtn = document.getElementById("enter-btn");
-
-enterBtn.addEventListener("click", () => {
-
-  portal.classList.add("collapse");
-
-  // Delay world activation slightly
-  setTimeout(() => {
-    targetIntensity = 1;
-  }, 700);
-
-  setTimeout(() => {
-    portal.style.display = "none";
-  }, 1200);
-
-});
-
-/* ---------------- ACT THREE ---------------- */
-
-function startActThree() {
-
-  const text = document.getElementById("narrative-text") || document.createElement("div");
-
-  text.id = "narrative-text";
-  text.style.position = "absolute";
-  text.style.top = "50%";
-  text.style.left = "50%";
-  text.style.transform = "translate(-50%, -50%)";
-  text.style.color = "white";
-  text.style.fontSize = "32px";
-  text.style.fontFamily = "serif";
-  text.style.opacity = "0";
-  text.style.transition = "opacity 1s ease";
-
-  document.body.appendChild(text);
-
-  text.textContent = "You get quiet.";
-  text.style.opacity = "1";
-
-  setTimeout(() => {
-    text.style.opacity = "0";
-    setTimeout(() => {
-      text.textContent = "You tilt your head.";
-      text.style.opacity = "1";
-    }, 800);
-  }, 2000);
-}
-
-// ==============================
-// BASELINE WORLD.JS CONTENT
-// (PASTE YOUR ORIGINAL ZIP FILE
-//  CONTENT HERE FIRST)
-// ==============================
-
-
-
-/* ============================================================
-   STEP 1 + 2 ADDITIVE (SAFE — NO ENGINE OVERRIDE)
-   ============================================================ */
-
-(function() {
-
-  const hiddenWords = document.querySelectorAll(".hidden-word");
-  const wordDisplay = document.getElementById("word-display");
-
-  let activeDisplay = false;
-  let displayStart = 0;
-  const displayDuration = 1400;
-
-  function displayLoop(time) {
-    if (!activeDisplay) return;
-
-    const elapsed = time - displayStart;
-
-    if (elapsed > displayDuration * 0.6) {
-      wordDisplay.style.opacity = 0;
-    }
-
-    if (elapsed > displayDuration) {
-      activeDisplay = false;
-      wordDisplay.textContent = "";
-      hiddenWords.forEach(w => w.style.pointerEvents = "auto");
-      return;
-    }
-
-    requestAnimationFrame(displayLoop);
-  }
-
-  hiddenWords.forEach(word => {
-    word.addEventListener("click", () => {
-
-      if (activeDisplay) return;
-
-      const opacity = parseFloat(getComputedStyle(word).opacity);
-      if (opacity < 0.4) return;
-
-      activeDisplay = true;
-      displayStart = performance.now();
-
-      hiddenWords.forEach(w => w.style.pointerEvents = "none");
-
-      // Fade clicked word out in place
-      word.style.transition = "opacity 0.3s ease";
-      word.style.opacity = 0;
-
-      // Show display
-      wordDisplay.textContent = word.textContent;
-      wordDisplay.style.opacity = 0;
-
-      requestAnimationFrame(() => {
-        wordDisplay.style.opacity = 1;
-        requestAnimationFrame(displayLoop);
-      });
-
-    });
-  });
-
-})();
-

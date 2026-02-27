@@ -290,7 +290,7 @@ window.addEventListener("load", () => {
 
   setTimeout(() => {
     readyText.style.opacity = "1";
-  }, 300);
+  }, 700);
 
   setTimeout(() => {
     button.style.opacity = "1";
@@ -307,4 +307,5 @@ enterBtn.addEventListener("click", () => {
   }, 1200);
   targetIntensity = 1;
 });
+
 

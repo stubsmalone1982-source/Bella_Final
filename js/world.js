@@ -116,7 +116,7 @@ void main() {
   vec2 glowOffset   = uMouse * 0.007 * uIntensity;
   vec2 pentOffset   = uMouse * 0.01  * uIntensity;
 
-  vec2 damaskUV = uv + damaskOffset;
+  vec2 damaskUV = uv * 3.5 + damaskOffset;
   vec2 glowUV   = uv + glowOffset;
   vec2 pentUV   = uv + pentOffset;
 
@@ -139,7 +139,7 @@ void main() {
 
   vec3 damaskTex = texture2D(uDamask, damaskUV).rgb;
   float damaskLum = dot(damaskTex, vec3(0.299, 0.587, 0.114));
-  vec3 damask = vec3(damaskLum) * 0.22;
+  vec3 damask = vec3(damaskLum) * 0.12/;
 
   vec2 center = vec2(0.5, 0.6);
   float distGlow = distance(glowUV, center);
@@ -308,3 +308,4 @@ window.addEventListener("load", () => {
   });
 
 });
+

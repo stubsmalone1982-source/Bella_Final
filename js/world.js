@@ -390,5 +390,75 @@ function startActThree() {
   }, 2000);
 }
 
+// ===== EXISTING BASELINE CODE (UNCHANGED ABOVE THIS LINE) =====
+// (Your entire original world.js content should remain here exactly as-is)
+
+
+// =========================
+// STEP 1 ADDITIONS ONLY
+// =========================
+
+// ---- Word Click Behavior State ----
+let activeDisplay = false;
+let displayStartTime = 0;
+let displayDuration = 1400; // total display cycle
+let clickedWordElement = null;
+
+const wordDisplay = document.getElementById("word-display");
+const hiddenWords = document.querySelectorAll(".hidden-word");
+
+// Attach click listeners (extend only)
+hiddenWords.forEach(word => {
+  word.addEventListener("click", () => {
+    if (activeDisplay) return;
+
+    // Only allow click if word is visible enough
+    const computedOpacity = parseFloat(getComputedStyle(word).opacity);
+    if (computedOpacity < 0.4) return;
+
+    activeDisplay = true;
+    clickedWordElement = word;
+    displayStartTime = performance.now();
+
+    // Fade out clicked word in place
+    word.style.transition = "opacity 0.3s ease";
+    word.style.opacity = 0;
+
+    // Show in display container
+    wordDisplay.textContent = word.textContent;
+    wordDisplay.style.opacity = 0;
+
+    requestAnimationFrame(() => {
+      wordDisplay.style.opacity = 1;
+    });
+  });
+});
+
+
+// ---- Extend Existing Animation Loop ----
+// We DO NOT replace your loop.
+// We wrap behavior into a safe extension.
+
+const originalAnimate = animate;
+
+animate = function(time) {
+  originalAnimate(time);
+
+  if (!activeDisplay) return;
+
+  const elapsed = time - displayStartTime;
+
+  // Hold then fade out display
+  if (elapsed > displayDuration * 0.6) {
+    wordDisplay.style.opacity = 0;
+  }
+
+  // End cycle
+  if (elapsed > displayDuration) {
+    activeDisplay = false;
+    clickedWordElement = null;
+    wordDisplay.textContent = "";
+  }
+};
 
 

@@ -309,3 +309,17 @@ window.addEventListener("load", () => {
 
 });
 
+const portal = document.getElementById("portal");
+const enterBtn = document.getElementById("enter-btn");
+
+enterBtn.addEventListener("click", () => {
+
+  portal.classList.add("collapse");
+
+  setTimeout(() => {
+    portal.style.display = "none";
+  }, 1200);
+
+});
+
+

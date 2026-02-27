@@ -1,42 +1,42 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: #0e0e11; /* deep charcoal */
+  background: #0e0e11;
   overflow: hidden;
 }
 
 /* --- Canvas --- */
 
 #world {
-  position: absolute;
+  position: fixed;
   inset: 0;
-  display: block;
   width: 100vw;
   height: 100vh;
+  display: block;
   z-index: 0;
 }
 
 /* --- Hidden Words --- */
 
 .hidden-word {
-  position: fixed;
-  color: rgba(255, 255, 255, 0.9);
-  text-shadow: 0 0 8px rgba(255,255,255,0.4);
+  position: absolute;
   font-family: serif;
   font-size: 28px;
-  pointer-events: auto;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 0 8px rgba(255,255,255,0.4);
   cursor: pointer;
-  transition: opacity 0.4s ease, filter 0.4s ease;
+  pointer-events: auto;
   opacity: 0;
   filter: blur(4px);
-  z-index: 10;
+  transition: opacity 0.4s ease, filter 0.4s ease;
+  z-index: 5;
 }
 
-/* ORIGINAL POSITIONS RESTORED */
+/* Original positions restored */
 
 #word1 { right: 12%; bottom: 18%; }
 #word2 { right: 15%; top: 20%; }
-#word3 { left: 18%;  top: 45%; }
+#word3 { left: 18%; top: 45%; }
 
 /* --- Word Display --- */
 
@@ -45,13 +45,13 @@ html, body {
   top: 8%;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 32px;
   font-family: serif;
+  font-size: 32px;
   color: rgba(220,220,230,0.9);
   opacity: 0;
-  transition: opacity 0.4s ease;
   pointer-events: none;
-  z-index: 20;
+  transition: opacity 0.4s ease;
+  z-index: 10;
 }
 
 /* --- Portal --- */
@@ -100,5 +100,3 @@ html, body {
 #portal button:hover {
   box-shadow: 0 0 15px rgba(150,0,255,0.5);
 }
-
-

@@ -283,6 +283,20 @@ window.addEventListener("load", () => {
 
 /* ---------------- PORTAL ---------------- */
 
+// --- Portal Fade In ---
+window.addEventListener("load", () => {
+  const readyText = document.querySelector("#portal h1");
+  const button = document.getElementById("enter-btn");
+
+  setTimeout(() => {
+    readyText.style.opacity = "1";
+  }, 300);
+
+  setTimeout(() => {
+    button.style.opacity = "1";
+  }, 1700);
+});
+
 const portal = document.getElementById("portal");
 const enterBtn = document.getElementById("enter-btn");
 
@@ -293,3 +307,4 @@ enterBtn.addEventListener("click", () => {
   }, 1200);
   targetIntensity = 1;
 });
+

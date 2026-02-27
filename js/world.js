@@ -283,43 +283,48 @@ window.addEventListener("load", () => {
 
 /* ---------------- WORD CLICK ---------------- */
 
-const wordDisplay = document.getElementById("word-display");
+window.addEventListener("load", () => {
 
-let wordLock = false;
-let wordsFound = 0;
+  const wordDisplay = document.getElementById("word-display");
 
-document.querySelectorAll(".hidden-word").forEach(word => {
+  let wordLock = false;
+  let wordsFound = 0;
 
-  word.addEventListener("click", () => {
+  document.querySelectorAll(".hidden-word").forEach(word => {
 
-    if (wordLock) return;
-    wordLock = true;
+    word.style.pointerEvents = "auto";
+    word.style.cursor = "pointer";
 
-    word.style.opacity = 0;
-    word.style.pointerEvents = "none";
+    word.addEventListener("click", () => {
 
-    wordDisplay.textContent = word.textContent;
-    wordDisplay.style.opacity = "1";
+      if (wordLock) return;
+      wordLock = true;
 
-    wordsFound++;
+      word.style.opacity = 0;
+      word.style.pointerEvents = "none";
 
-    setTimeout(() => {
-      wordDisplay.style.opacity = "0";
-      wordLock = false;
-    }, 1800);
+      wordDisplay.textContent = word.textContent;
+      wordDisplay.style.opacity = "1";
 
-    // Trigger next phase after 3 words
-    if (wordsFound === 3) {
+      wordsFound++;
+
       setTimeout(() => {
-        worldActive = false;
-        startActThree();
-      }, 1200);
-    }
+        wordDisplay.style.opacity = "0";
+        wordLock = false;
+      }, 1800);
+
+      if (wordsFound === 3) {
+        setTimeout(() => {
+          worldActive = false;
+          startActThree();
+        }, 1200);
+      }
+
+    });
 
   });
 
-}); 
-
+});
 /* ---------------- PORTAL ---------------- */
 
 // --- Portal Fade In ---
@@ -354,6 +359,36 @@ enterBtn.addEventListener("click", () => {
 
 });
 
+/* ---------------- ACT THREE ---------------- */
+
+function startActThree() {
+
+  const text = document.getElementById("narrative-text") || document.createElement("div");
+
+  text.id = "narrative-text";
+  text.style.position = "absolute";
+  text.style.top = "50%";
+  text.style.left = "50%";
+  text.style.transform = "translate(-50%, -50%)";
+  text.style.color = "white";
+  text.style.fontSize = "32px";
+  text.style.fontFamily = "serif";
+  text.style.opacity = "0";
+  text.style.transition = "opacity 1s ease";
+
+  document.body.appendChild(text);
+
+  text.textContent = "You get quiet.";
+  text.style.opacity = "1";
+
+  setTimeout(() => {
+    text.style.opacity = "0";
+    setTimeout(() => {
+      text.textContent = "You tilt your head.";
+      text.style.opacity = "1";
+    }, 800);
+  }, 2000);
+}
 
 
 

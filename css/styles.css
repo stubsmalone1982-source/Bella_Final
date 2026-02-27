@@ -77,3 +77,14 @@ canvas {
 #portal button:hover {
   box-shadow: 0 0 15px rgba(150,0,255,0.5);
 }
+
+#portal {
+  transition: opacity 1.2s ease, transform 1.2s ease;
+  transform: scale(1);
+}
+
+#portal.collapse {
+  opacity: 0;
+  transform: scale(0.94);
+}
+

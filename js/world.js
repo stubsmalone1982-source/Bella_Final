@@ -1,10 +1,8 @@
-// ===== BASELINE ENGINE (UNCHANGED ABOVE) =====
-// KEEP ALL YOUR ORIGINAL WORLD.JS CONTENT EXACTLY AS-IS
-// INCLUDING SHADER, RIPPLE, ANIMATE LOOP, ETC.
-
+// ===== KEEP ALL YOUR EXISTING BASELINE ENGINE CODE =====
+// (Shader, ripple system, animate loop, word reveal logic, etc.)
 
 // =========================
-// STEP 1 + STEP 2 EXTENSION
+// STEP 1 + 2 (UNCHANGED)
 // =========================
 
 let activeDisplay = false;
@@ -12,33 +10,28 @@ let displayStartTime = 0;
 let displayDuration = 1400;
 let clickedWordElement = null;
 
+let act3Unlocked = false; // NEW GATE
+
 const wordDisplay = document.getElementById("word-display");
 const hiddenWords = document.querySelectorAll(".hidden-word");
 
-// ---- Safe Click Handler ----
 hiddenWords.forEach(word => {
   word.addEventListener("click", () => {
 
-    // Block if display already running
     if (activeDisplay) return;
 
     const computedOpacity = parseFloat(getComputedStyle(word).opacity);
-
-    // Only clickable if sufficiently visible
     if (computedOpacity < 0.4) return;
 
     activeDisplay = true;
     clickedWordElement = word;
     displayStartTime = performance.now();
 
-    // Disable pointer events on all words during display
     hiddenWords.forEach(w => w.style.pointerEvents = "none");
 
-    // Fade out clicked word in place
     word.style.transition = "opacity 0.3s ease";
     word.style.opacity = 0;
 
-    // Show top display
     wordDisplay.textContent = word.textContent;
     wordDisplay.style.opacity = 0;
 
@@ -48,30 +41,33 @@ hiddenWords.forEach(word => {
   });
 });
 
-
-// ---- Extend Existing Animate Loop Safely ----
 const originalAnimate = animate;
 
 animate = function(time) {
   originalAnimate(time);
 
-  if (!activeDisplay) return;
+  if (activeDisplay) {
+    const elapsed = time - displayStartTime;
 
-  const elapsed = time - displayStartTime;
+    if (elapsed > displayDuration * 0.6) {
+      wordDisplay.style.opacity = 0;
+    }
 
-  // Fade out display toward end
-  if (elapsed > displayDuration * 0.6) {
-    wordDisplay.style.opacity = 0;
+    if (elapsed > displayDuration) {
+      activeDisplay = false;
+      hiddenWords.forEach(w => w.style.pointerEvents = "auto");
+      clickedWordElement = null;
+      wordDisplay.textContent = "";
+    }
   }
 
-  // End display cycle cleanly
-  if (elapsed > displayDuration) {
-    activeDisplay = false;
+  // ===== ACT III BLOCKER =====
+  // If your baseline had any condition triggering Act III,
+  // wrap it like this:
 
-    // Restore pointer events
-    hiddenWords.forEach(w => w.style.pointerEvents = "auto");
-
-    clickedWordElement = null;
-    wordDisplay.textContent = "";
+  if (!act3Unlocked) {
+    return;
   }
+
+  // (Existing Act III logic continues below if unlocked)
 };

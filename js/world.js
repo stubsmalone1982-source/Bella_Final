@@ -307,13 +307,14 @@ enterBtn.addEventListener("click", () => {
   // Delay world activation slightly
   setTimeout(() => {
     targetIntensity = 1;
-  }, 500);
+  }, 700);
 
   setTimeout(() => {
     portal.style.display = "none";
   }, 1200);
 
 });
+
 
 
 

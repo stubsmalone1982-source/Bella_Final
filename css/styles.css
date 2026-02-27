@@ -19,6 +19,20 @@ html, body {
 /* --- Hidden Words --- */
 
 .hidden-word {
+  #word1 {
+  top: 65%;
+  left: 75%;
+}
+
+#word2 {
+  top: 25%;
+  left: 70%;
+}
+
+#word3 {
+  top: 50%;
+  left: 20%;
+}
   position: absolute;
   z-index: 10;
   opacity: 0;
@@ -93,3 +107,4 @@ html, body {
 #portal button:hover {
   box-shadow: 0 0 15px rgba(150,0,255,0.5);
 }
+

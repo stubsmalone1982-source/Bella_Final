@@ -8,7 +8,7 @@ html, body {
 /* --- Canvas --- */
 
 #world {
-  position: fixed;
+  position: absolute;
   inset: 0;
   display: block;
   width: 100vw;
@@ -100,4 +100,5 @@ html, body {
 #portal button:hover {
   box-shadow: 0 0 15px rgba(150,0,255,0.5);
 }
+
 

@@ -281,6 +281,45 @@ window.addEventListener("load", () => {
   });
 });
 
+/* ---------------- WORD CLICK ---------------- */
+
+const wordDisplay = document.getElementById("word-display");
+
+let wordLock = false;
+let wordsFound = 0;
+
+document.querySelectorAll(".hidden-word").forEach(word => {
+
+  word.addEventListener("click", () => {
+
+    if (wordLock) return;
+    wordLock = true;
+
+    word.style.opacity = 0;
+    word.style.pointerEvents = "none";
+
+    wordDisplay.textContent = word.textContent;
+    wordDisplay.style.opacity = "1";
+
+    wordsFound++;
+
+    setTimeout(() => {
+      wordDisplay.style.opacity = "0";
+      wordLock = false;
+    }, 1800);
+
+    // Trigger next phase after 3 words
+    if (wordsFound === 3) {
+      setTimeout(() => {
+        worldActive = false;
+        startActThree();
+      }, 1200);
+    }
+
+  });
+
+}); 
+
 /* ---------------- PORTAL ---------------- */
 
 // --- Portal Fade In ---
@@ -314,6 +353,7 @@ enterBtn.addEventListener("click", () => {
   }, 1200);
 
 });
+
 
 
 

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bella Project — Spine Spec</title>
+  <style>
+    :root{
+      --ink:#1b1b1b;
+      --muted:#444;
+      --rule:#ddd;
+      --accent:#4b1f63;
+      --paper:#ffffff;
+    }
+    html,body{background:#f3f3f3;margin:0;padding:0;font-family: ui-serif, Georgia, "Times New Roman", serif;color:var(--ink);}
+    .page{
+      width:min(900px, 92vw);
+      margin:24px auto;
+      background:var(--paper);
+      padding:56px 64px;
+      box-shadow:0 10px 30px rgba(0,0,0,.12);
+      border-radius:10px;
+    }
+    h1{margin:0 0 8px;font-size:30px;letter-spacing:.2px;}
+    .sub{color:var(--muted);margin:0 0 20px;font-size:14px}
+    h2{margin:28px 0 10px;font-size:18px;border-top:1px solid var(--rule);padding-top:18px}
+    h3{margin:18px 0 8px;font-size:15px}
+    p,li{line-height:1.45;font-size:13.5px}
+    ul{margin:8px 0 12px;padding-left:18px}
+    .grid{display:grid;grid-template-columns: 1fr 1fr; gap:18px}
+    .tag{display:inline-block;border:1px solid var(--rule);padding:3px 8px;border-radius:999px;font-size:12px;color:var(--muted)}
+    .callout{
+      border-left:4px solid var(--accent);
+      background:#faf6ff;
+      padding:12px 14px;
+      margin:12px 0;
+      font-size:13px;
+    }
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;font-size:12px;background:#f7f7f7;padding:10px;border-radius:8px;border:1px solid #eee;white-space:pre-wrap}
+    @media print{
+      body{background:#fff}
+      .page{box-shadow:none;border-radius:0;margin:0;width:auto;padding:18mm 16mm}
+      a{color:inherit;text-decoration:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>Bella Project — Spine Spec (Build-Ready)</h1>
+    <p class="sub">Full breakdown of the locked arc: visuals, audio, motion physics, interactions, and scene-by-scene choreography.</p>
+
+    <div class="grid">
+      <div>
+        <h2>Purpose</h2>
+        <p>Create a cinematic interactive web experience crafted specifically for her. Not a website — choreography. Target runtime ~12 minutes.</p>
+        <ul>
+          <li>Tone progression: <b>Playful → Aware → Focused → Intimate → Warm</b></li>
+          <li>End state: choosing <b>Let’s Hang Out</b> feels inevitable but never pressured.</li>
+        </ul>
+      </div>
+      <div>
+        <h2>Core Dynamic</h2>
+        <ul>
+          <li>Mutual awareness: she knows what she’s doing; he knows she knows; he lets her.</li>
+          <li>Not dominance. Not trapping. Not accusatory.</li>
+          <li>Intimacy arrives via <b>subtraction</b>, not escalation.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>Global Style Language</h2>
+    <ul>
+      <li>Curated gothic elegance (Victorian mood, charcoal base, plum/violet ambience).</li>
+      <li>Muted antique silver typography (never pure white).</li>
+      <li>Animation: crossfades over cuts; emerging over appearing; motion must feel physical (light/focus/weight), not UI.</li>
+    </ul>
+
+    <h2>Audio System (Locked)</h2>
+    <h3>Background ambience (loop)</h3>
+    <ul>
+      <li>Starts on first click (Act I → Act II). Loops continuously.</li>
+      <li>Slight dip during Act II→Act III crossfade; slight additional dip after “You tilt your head” fades.</li>
+      <li>On “Let’s Hang Out” click: fade out 1.5–2s, then silence.</li>
+    </ul>
+    <h3>Giggle</h3>
+    <ul>
+      <li>Plays once, after “You bite your finger…” with a half-beat pause.</li>
+      <li>Volume slightly lower than expected (intimate).</li>
+    </ul>
+    <h3>Voice</h3>
+    <ul>
+      <li>Act III: “You bite your finger…” and “There it is.”</li>
+      <li>Final transition: “There you are… It’s good to see you, sweetheart.”</li>
+      <li>Delivery: calm, close, slight smile; not performed.</li>
+    </ul>
+
+    <h2>Act I — Threshold</h2>
+    <div class="callout">
+      <b>Screen:</b> pure black<br/>
+      <b>Text:</b> “Ready” (statement)<br/>
+      <b>Button:</b> “Let’s go”
+    </div>
+    <ul>
+      <li>On click: collapse inward → subtle violet compression → brief wormhole bridge (refined, not sci-fi) → expansion into Act II.</li>
+      <li>Music begins at collapse (low swell), fully present by arrival.</li>
+    </ul>
+
+    <h2>Act II — The World</h2>
+    <h3>Environment Layers</h3>
+    <div class="mono">1) Deep charcoal base (not pure black)
+2) Damask texture (low opacity, velvet feel)
+3) Plum glow (wide, subtle, slightly below center)
+4) Pentagram watermark (very faint, large, slightly above center, rotated ~10:30, etched feel)</div>
+
+    <h3>World Engine Motion</h3>
+    <ul>
+      <li><b>Parallax:</b> ultra-subtle depth shifts; damask least, glow more, pentagram slightly more; smooth easing.</li>
+      <li><b>Ripple:</b> triggers after mouse pause (250–350ms); origin offset behind motion direction; velvet/light distortion; 600–800ms; no visible rings.</li>
+      <li><b>Intensity scaling:</b> Phase 1=100%, Phase 2=80%, Phase 3=60%, Stillness=0% (freeze).</li>
+    </ul>
+
+    <h2>Act II Phase 1 — Discovery Words</h2>
+    <ul>
+      <li>Hidden words embedded in environment, revealed by ripple pass, then clickable:</li>
+      <li><b>mischievous</b> (lower-right), <b>playful</b> (upper-right), <b>tease</b> (mid-left)</li>
+      <li>On click: word disappears from environment, appears top-center for 1.5–2s, fades out (no stacking).</li>
+    </ul>
+
+    <h2>Act II Phase 2 — Steering</h2>
+    <div class="mono">I know that look.
+(beat)
+You’re having fun…
+(half beat)
+So…
+(half beat)
+…are we behaving?</div>
+    <ul>
+      <li>Choice appears: <b>Yes</b> / <b>No</b></li>
+      <li>Yes → “Oh really.” | No → “I thought so.” (tone branch only; converge back)</li>
+    </ul>
+
+    <h2>Act II Phase 3 — Convergence</h2>
+    <div class="mono">Then you should follow me…
+(morph)
+…to the end of the journey.</div>
+    <ul>
+      <li>Visual: center gravity shift / narrowing focus (not a portal, not blur-wipe).</li>
+      <li>Motion intensity reduces further; world calms.</li>
+    </ul>
+
+    <h2>Stillness Gate</h2>
+    <ul>
+      <li>Text emerges from dark center: <b>Don’t move.</b></li>
+      <li>On success: ripple+parallax fade to 0; perceptible freeze.</li>
+      <li>“Good.” appears briefly (~0.8s) then crossfade into Act III begins.</li>
+    </ul>
+
+    <h2>Act III — Intimacy</h2>
+    <ul>
+      <li>Pure black background. Portrait fades in during crossfade; thin antique silver vine frame; subtle violet underglow; slow linear zoom.</li>
+      <li>Pause 2.5–3 seconds after portrait settles.</li>
+      <li>Text: “You get quiet.” then “You tilt your head.”</li>
+      <li>After “You tilt your head” fades: slight music dip.</li>
+      <li>Voice: “You bite your finger…” → half-beat → giggle → voice: “There it is.”</li>
+    </ul>
+
+    <h2>Final Fork</h2>
+    <div class="mono">So…
+What do we do now?</div>
+    <ul>
+      <li>Portrait crossfades out; buttons fade in horizontal, slightly below center.</li>
+      <li>Left: <b>Let’s Hang Out</b> | Right: <b>One More Game</b></li>
+      <li>Hover: highlight hovered only; never dim the other.</li>
+      <li>Click: subtle inward pulse + violet deepen → fade to black → music fade out.</li>
+    </ul>
+
+    <h2>Final Transition Page (Let’s Hang Out path)</h2>
+    <ul>
+      <li>Pure black. Silence.</li>
+      <li>Voice: “There you are… It’s good to see you, sweetheart.”</li>
+      <li>Link appears as centered text (no button border); hover = slight brightness lift.</li>
+    </ul>
+
+    <h2>Build Order (Anti-Drift)</h2>
+    <ol>
+      <li>World engine: canvas, parallax, ripple shader, intensity scalar, freeze</li>
+      <li>Hidden word reveal/click/ack system</li>
+      <li>Phase controller (1→2→3) tied to intensity + text entrances</li>
+      <li>Stillness gate + crossfade into Act III</li>
+      <li>Portrait stage + frame + slow zoom</li>
+      <li>Audio cues (music start/dips/fade; giggle once; voice lines)</li>
+      <li>Fork + final transition page</li>
+    </ol>
+
+    <p class="sub">End of spec.</p>
+  </div>
+</body>
+</html>

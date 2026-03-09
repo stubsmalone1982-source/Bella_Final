@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bella</title>
+
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico?v=2" />
+  <link rel="stylesheet" href="css/styles.css?v=1.4" />
+</head>
+<body>
+
+  <!-- PORTAL -->
+  <div id="portal">
+    <div id="portal-content">
+      <h1>Ready...</h1>
+      <button id="enter-btn">Let’s go</button>
+    </div>
+  </div>
+
+  <!-- Word display -->
+  <div id="word-display"></div>
+
+  <!-- Hidden words (Act II) -->
+  <div class="hidden-word" id="word1">mischievous</div>
+  <div class="hidden-word" id="word2">playful</div>
+  <div class="hidden-word" id="word3">tease</div>
+
+  <!-- ACT III -->
+<!-- ACT III -->
+<div id="act3-container">
+  <div id="portrait-wrapper">
+    <img id="act3-portrait" src="assets/portrait.png" />
+    <img class="frame-overlay" src="assets/frame-overlay.png">
+  </div>
+
+  <div id="act3-text">
+    <div id="act3-line"></div>
+  </div>
+
+  <div id="act3-choices">
+    <div id="choice-right" class="choice-btn">Let’s Hang Out</div>
+    <div id="choice-left" class="choice-btn">One More Game</div>
+  </div>
+</div>
+
+  <!-- WORLD -->
+  <canvas id="world"></canvas>
+
+  <audio id="bg-ambience" loop>
+    <source src="assets/background-ambience.mp3" type="audio/mpeg">
+  </audio>
+
+
+  <script src="js/world.js?v=1.4"></script> 
+
+</body>
+</html> 
+

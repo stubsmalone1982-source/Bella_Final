@@ -1,0 +1,430 @@
+/* ===================== */
+/* GLOBAL SYSTEM */
+/* ===================== */
+
+:root {
+  --fade-in: 1200ms ease;
+  --fade-out: 800ms ease;
+  --text-size: 34px;
+  --text-color: rgba(185,190,200,0.92);
+  --text-shadow:
+  0 1px 6px rgba(255,255,255,0.05),
+  0 0 14px rgba(180,190,210,0.25);
+}
+
+html, body {
+  height: 100%;
+}
+
+/* GLOBAL RENDER STACK
+1 world
+2 UI
+3 act3 scene
+4 portrait
+5 frame
+6 narration
+7 choices
+*/
+
+:root{
+--layer-world:1;
+--layer-ui:2;
+--layer-act3:3;
+--layer-portrait:4;
+--layer-frame:5;
+--layer-text:6;
+--layer-choices:7;
+}
+
+@font-face {
+  font-family: "Cormorant";
+  src: url("../assets/CormorantGaramond-VariableFont_wght.ttf");
+}
+
+@font-face {
+  font-family: "MoonDance";
+  src: url("../assets/MoonDance-Regular.ttf");
+}
+
+body {
+  position: relative;
+  margin: 0;
+  background: #000;
+  color: #eee;
+  font-family: "Cormorant", serif;
+}
+
+canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index:var(--layer-world);
+}
+
+/* ===================== */
+/* HIDDEN WORDS (ACT II) */
+/* ===================== */
+
+.hidden-word {
+  position: absolute;
+  font-size: 28px;
+  color: rgba(200,190,255,0.85);
+
+  text-shadow:
+    0 0 4px rgba(255,255,255,0.15),
+    0 0 10px rgba(160,120,255,0.15);
+
+  cursor: pointer;
+
+  opacity: 0;
+  transform: scale(0.96);
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    text-shadow 0.35s ease;
+
+  z-index: var(--layer-ui);
+}
+
+#word1 { left: 75%; top: 75%; }
+#word2 { left: 58%; top: 20%; }
+#word3 { left: 18%; top: 58%; }
+
+.hidden-word.visible {
+  opacity: 1;
+  transform: scale(1);
+
+  text-shadow:
+    0 0 8px rgba(255,255,255,0.35),
+    0 0 16px rgba(180,140,255,0.45),
+    0 0 28px rgba(180,140,255,0.25);
+
+  animation: wordPulse 900ms ease;
+}
+
+@keyframes wordPulse {
+
+  0% {
+    transform: scale(0.95);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
+  }
+
+}
+
+/* Word display (Act I & II) */
+
+#word-display {
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 34px;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ===================== */
+/* PORTAL */
+/* ===================== */
+
+#portal {
+  position: fixed;
+  inset: 0;
+  background:
+  radial-gradient(
+    circle at center,
+    rgba(40,14,90,0.28) 0%,
+    rgba(10,6,18,0.82) 42%,
+    rgba(0,0,0,1) 78%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index:var(--layer-portrait);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+}
+
+#portal-content {
+  text-align: center;
+}
+
+#portal h1 {
+  font-family: "MoonDance", cursive;
+  font-size: 56px;
+  margin-bottom: 20px;
+  opacity: 0;
+
+  letter-spacing: 1px;
+
+  text-shadow:
+    0 0 10px rgba(255,255,255,0.15),
+    0 0 25px rgba(160,120,255,0.35);
+
+  transition: opacity 2.2s ease;
+}
+
+#portal button {
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba(220,220,230,0.6);
+  color: white;
+
+  padding: 12px 32px;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+
+  cursor: pointer;
+  opacity: 0;
+
+  transition:
+    opacity 1.8s ease,
+    box-shadow 300ms ease,
+    border-color 300ms ease,
+    transform 200ms ease;
+}
+
+#portal button:hover {
+  border-color: rgba(180,140,255,0.8);
+
+  box-shadow:
+    0 0 12px rgba(160,120,255,0.45),
+    0 0 28px rgba(160,120,255,0.2);
+
+  transform: translateY(-1px);
+}
+
+#portal.collapse {
+  opacity: 0;
+  transform: scale(1.05);
+  filter: blur(8px);
+}
+
+/* ===================== */
+/* ACT III */
+/* ===================== */
+
+#act3-container {
+  position: fixed;
+  inset: 0;
+  z-index:var(--layer-act3);
+
+  background: black;
+  background-image: url("../assets/castle-bg.png");
+  background-repeat: no-repeat;
+  background-position: center 40%;
+  background-size: 80%;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--fade-in);
+}
+
+#act3-container.active {
+  opacity: 1;
+  pointer-events: auto;
+} 
+
+#act3-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  transition: background var(--fade-in);
+  z-index:var(--layer-text);
+}
+
+/* === PORTRAIT WRAPPER === */
+
+#portrait-wrapper {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.70);
+  width: 38vh;
+  height: 56vh;
+  border-radius: 50% / 60%;
+  overflow: hidden;
+  transition: transform 2000ms cubic-bezier(0.22, 0.61, 0.36, 1),
+            filter var(--fade-in);
+  filter: brightness(0.7);
+  z-index:var(--layer-text);
+}
+
+/* Full zoom */
+#portrait-wrapper.enter {
+  transform: translate(-50%, -50%) scale(1.5);
+  filter: brightness(0.8);
+}
+
+/* Choice state */
+#portrait-wrapper.choice-mode {
+  transform: translate(-50%, -50%) scale(1);
+  filter: brightness(0.6);
+}
+
+/* Portrait image */
+#act3-portrait {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Frame overlay — your tuned numbers */
+
+.frame-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 173.4%;
+  height: 96%;
+  transform: translate(-50%, -49.4%) scale(1.17);
+  transform-origin: center;
+  pointer-events: none;
+  z-index:var(--layer-text);
+}
+
+.frame-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 40%,
+    rgba(255,255,255,0.35) 50%,
+    transparent 60%
+  );
+  transform: translateX(-120%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.frame-overlay.shimmer::after {
+  animation: frameShimmer 900ms ease forwards;
+  opacity: 1;
+}
+
+@keyframes frameShimmer {
+
+  0% {
+    transform: translateX(-140%);
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  75% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(140%);
+    opacity: 0;
+  }
+
+}
+
+/* === ACT III NARRATION === */
+
+#act3-text {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(60ch, 75vw);
+  text-align: center;
+  z-index:var(--layer-text);
+  pointer-events: none;
+}
+
+#act3-text.text-top {
+  top: 10%;
+}
+
+#act3-text.text-bottom {
+  bottom: 10%;
+  top: auto;
+  transform: translateX(-50%);
+}
+
+#act3-line {
+  font-size: var(--text-size);
+  color: var(--text-color);
+  opacity: 0;
+  transition: opacity var(--fade-in);
+  text-shadow: 0 2px 22px rgba(0,0,0,0.6);
+}
+
+.fade-in {
+  opacity: 1;
+  transition: opacity var(--fade-in);
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity var(--fade-out);
+}
+
+/* === ACT III CHOICES === */
+
+.choice {
+  transform: scale(0.85);
+  opacity: 0;
+  transition: transform var(--fade-in), opacity var(--fade-in);
+}
+
+.choice.enter {
+  transform: scale(1);
+  opacity: 1;
+}
+
+#act3-choices {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 120px;
+  z-index: var(--layer-text);
+}
+
+.choice-btn {
+  font-size: 24px;
+  cursor: pointer;
+  color: rgba(200,190,255,0.92);
+
+  border: none;
+  background: none;
+  padding: 0;
+
+  text-decoration: underline;
+  text-decoration-color: rgba(180,140,255,0.35);
+  text-underline-offset: 6px;
+
+  opacity: 0;
+
+  transition:
+    transform 1200ms cubic-bezier(.2,.7,.2,1),
+    opacity 900ms ease,
+    text-shadow 300ms ease,
+    text-decoration-color 300ms ease;
+}
+
+.choice-btn.show {
+  opacity: 1;
+  transform: scale(1);
+}
